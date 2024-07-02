@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Comercio</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Color de fondo */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%; /* Ajustar la anchura del contenedor */
+            max-width: 800px; /* Limitar la anchura máxima */
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            text-align: left; /* Alinear el texto a la izquierda */
+            overflow-y: auto; /* Permitir el desplazamiento vertical si el contenido es demasiado grande */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dos columnas */
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2; /* Ocupa ambas columnas */
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            grid-column: span 2; /* Ocupa ambas columnas */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Comercio</h1>
+        <form action="{{ url_for('edit_comercio', comercio_id=comercio.id) }}" method="post">
+            <div class="form-group">
+                <label for="ruc">RUC:</label>
+                <input type="text" id="ruc" name="ruc" value="{{ comercio.ruc }}" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre_comercial">Nombre Comercial:</label>
+                <input type="text" id="nombre_comercial" name="nombre_comercial" value="{{ comercio.nombre_comercial }}" required>
+            </div>
+            <div class="form-group">
+                <label for="razon_social">Razón Social:</label>
+                <input type="text" id="razon_social" name="razon_social" value="{{ comercio.razon_social }}" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" value="{{ comercio.direccion }}" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" value="{{ comercio.telefono }}" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre_contacto">Nombre Contacto:</label>
+                <input type="text" id="nombre_contacto" name="nombre_contacto" value="{{ comercio.nombre_contacto }}" required>
+            </div>
+            <div class="form-group full-width">
+                <label for="tipo_establecimiento">Tipo Establecimiento:</label>
+                <input type="text" id="tipo_establecimiento" name="tipo_establecimiento" value="{{ comercio.tipo_establecimiento }}" readonly>
+            </div>
+
+            <!-- Campos específicos para Restaurante -->
+            {% if comercio.tipo_establecimiento == 'restaurante' %}
+            <div id="restaurante_fields" class="form-group">
+                <label for="ubicacion">Ubicación:</label>
+                <input type="text" id="ubicacion" name="ubicacion" value="{{ comercio.ubicacion }}">
+            </div>
+            <div class="form-group">
+                <label for="direccion_restaurante">Dirección Restaurante:</label>
+                <input type="text" id="direccion_restaurante" name="direccion_restaurante" value="{{ comercio.direccion_restaurante }}">
+            </div>
+            <div class="form-group">
+                <label for="horario_atencion">Horario Atención:</label>
+                <input type="text" id="horario_atencion" name="horario_atencion" value="{{ comercio.horario_atencion }}">
+            </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" name="especialidad" value="{{ comercio.especialidad }}">
+            </div>
+            <div class="form-group">
+                <label for="rango_precios">Rango Precios:</label>
+                <input type="text" id="rango_precios" name="rango_precios" value="{{ comercio.rango_precios }}">
+            </div>
+            {% endif %}
+
+            <!-- Campos específicos para Transporte -->
+            {% if comercio.tipo_establecimiento == 'transporte' %}
+            <div id="transporte_fields" class="form-group">
+                <label for="nombre_transporte">Nombre Transporte:</label>
+                <input type="text" id="nombre_transporte" name="nombre_transporte" value="{{ comercio.nombre_transporte }}">
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" value="{{ comercio.descripcion }}">
+            </div>
+            <div class="form-group">
+                <label for="costo_por_hora">Costo por Hora:</label>
+                <input type="text" id="costo_por_hora" name="costo_por_hora" value="{{ comercio.costo_por_hora }}">
+            </div>
+            {% endif %}
+
+            <!-- Campos específicos para Hotel -->
+            {% if comercio.tipo_establecimiento == 'hotel' %}
+            <div id="hotel_fields" class="form-group">
+                <label for="nombre_hotel">Nombre Hotel:</label>
+                <input type="text" id="nombre_hotel" name="nombre_hotel" value="{{ comercio.nombre_hotel }}">
+            </div>
+            <div class="form-group">
+                <label for="tipo_hotel">Tipo Hotel:</label>
+                <input type="text" id="tipo_hotel" name="tipo_hotel" value="{{ comercio.tipo_hotel }}">
+            </div>
+            <div class="form-group">
+                <label for="costo">Costo:</label>
+                <input type="text" id="costo" name="costo" value="{{ comercio.costo }}">
+            </div>
+            <div class="form-group">
+                <label for="ubicacion_geografica">Ubicación Geográfica:</label>
+                <input type="text" id="ubicacion_geografica" name="ubicacion_geografica" value="{{ comercio.ubicacion_geografica }}">
+            </div>
+            {% endif %}
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>

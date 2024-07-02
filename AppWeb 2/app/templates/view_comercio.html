@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ver Comercio</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Color de fondo */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            text-align: center; /* Centrar elementos internos */
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        p strong {
+            color: #333;
+        }
+
+        a, button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        a {
+            background-color: #007bff;
+            color: white;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles del Comercio</h1>
+        <p><strong>RUC:</strong> {{ comercio.ruc }}</p>
+        <p><strong>Nombre Comercial:</strong> {{ comercio.nombre_comercial }}</p>
+        <p><strong>Razón Social:</strong> {{ comercio.razon_social }}</p>
+        <p><strong>Dirección:</strong> {{ comercio.direccion }}</p>
+        <p><strong>Teléfono:</strong> {{ comercio.telefono }}</p>
+        <p><strong>Nombre Contacto:</strong> {{ comercio.nombre_contacto }}</p>
+        <p><strong>Tipo Establecimiento:</strong> {{ comercio.tipo_establecimiento }}</p>
+
+        <!-- Campos específicos para Restaurante -->
+        {% if comercio.tipo_establecimiento == 'restaurante' %}
+            <p><strong>Ubicación:</strong> {{ comercio.ubicacion }}</p>
+            <p><strong>Dirección Restaurante:</strong> {{ comercio.direccion_restaurante }}</p>
+            <p><strong>Horario Atención:</strong> {{ comercio.horario_atencion }}</p>
+            <p><strong>Especialidad:</strong> {{ comercio.especialidad }}</p>
+            <p><strong>Rango Precios:</strong> {{ comercio.rango_precios }}</p>
+        {% endif %}
+
+        <!-- Campos específicos para Transporte -->
+        {% if comercio.tipo_establecimiento == 'transporte' %}
+            <p><strong>Nombre Transporte:</strong> {{ comercio.nombre_transporte }}</p>
+            <p><strong>Descripción:</strong> {{ comercio.descripcion }}</p>
+            <p><strong>Costo por Hora:</strong> {{ comercio.costo_por_hora }}</p>
+        {% endif %}
+
+        <!-- Campos específicos para Hotel -->
+        {% if comercio.tipo_establecimiento == 'hotel' %}
+            <p><strong>Nombre Hotel:</strong> {{ comercio.nombre_hotel }}</p>
+            <p><strong>Tipo Hotel:</strong> {{ comercio.tipo_hotel }}</p>
+            <p><strong>Costo:</strong> {{ comercio.costo }}</p>
+            <p><strong>Ubicación Geográfica:</strong> {{ comercio.ubicacion_geografica }}</p>
+        {% endif %}
+
+        <a href="{{ url_for('edit_comercio', comercio_id=comercio.id) }}">Editar</a>
+        <form action="{{ url_for('delete_comercio', comercio_id=comercio.id) }}" method="post" style="display:inline;">
+            <button type="submit">Eliminar</button>
+        </form>
+        <a href="{{ url_for('index') }}">Volver</a>
+    </div>
+</body>
+</html>
